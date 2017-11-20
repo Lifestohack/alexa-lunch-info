@@ -47,9 +47,18 @@ public class DBSpeechlet implements SpeechletV2 {
 			return getMenusResponse();
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return getHelpResponse();
-		} else {
+		} else if("AMAZON.StopIntent".equals(intentName)){
+			return stopIntent();
+		}
+		else {
 			return getAskResponse("Unsupported", "This is unsupported.  Please try something else.");
 		}
+	}
+	
+	
+	private SpeechletResponse stopIntent() {
+		String speechText = "Good Appetite.";
+		return getAskResponse("Stop", speechText);
 	}
 	
 	private SpeechletResponse getMenusResponse() {
@@ -59,7 +68,7 @@ public class DBSpeechlet implements SpeechletV2 {
 
 	private SpeechletResponse getHelpResponse() {
 		String speechText = "Try saying Menu one or Menu two.";
-		return getAskResponse("Alexa Sogeti Mittag essen", speechText);
+		return getAskResponse("Mittag essen", speechText);
 	}
 
 	private SpeechletResponse getAskResponse(String cardTitle, String speechText) {
