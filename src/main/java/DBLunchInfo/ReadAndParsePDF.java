@@ -1,3 +1,4 @@
+
 package DBLunchInfo;
 
 import java.io.IOException;
@@ -43,13 +44,13 @@ public class ReadAndParsePDF {
 	private static String beautifyText(String text) {
 		String returnText = text;
 		try {
-			String replaceCh = text.substring(text.indexOf('(') + 1,
+			String replaceCh = text.substring(text.indexOf('(') +1,
 					text.lastIndexOf(')'));
-			if (replaceCh.length() < 1) {
+			if (replaceCh.length() <= 1) {
 				returnText = text.replace('(' + replaceCh + ')', "");
 			}
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		return returnText;
