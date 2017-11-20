@@ -4,13 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import technology.tabula.Page;
-import technology.tabula.Table;
-import technology.tabula.extractors.SpreadsheetExtractionAlgorithm;
 import Models.Days;
 import Models.Menus;
 
@@ -19,13 +15,13 @@ public class test {
 	static String pdfWebsite = "https://www.ullrich-pittroff-catering.de/downloads/karten_komplett.pdf";
 
 	public static void main(String[] args) throws IOException {
-		ReadAndParsePDF a = new ReadAndParsePDF();
-		String menu = a.getMenu(Menus.DESSERT, Days.MITTWOCH);
+		ReadAndParsePDF readAndParsePDF = new ReadAndParsePDF();
+		String menu = readAndParsePDF.getMenu(Menus.BISTRO, Days.FREITAG);
+		System.out.println("***********");
 		System.out.println(menu);
+		System.out.println("***********");
+		
 	}
-	
-	
-	
 
 	public static void saveFile(String text) {
 		PrintWriter writer = null;

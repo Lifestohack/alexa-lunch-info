@@ -15,6 +15,9 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
 
+import Models.Days;
+import Models.Menus;
+
 public class DBSpeechlet implements SpeechletV2 {
 	private static final Logger logger = LoggerFactory.getLogger(DBSpeechlet.class);
 
@@ -62,8 +65,9 @@ public class DBSpeechlet implements SpeechletV2 {
 	}
 	
 	private SpeechletResponse getMenusResponse() {
-		String speechText = "Menu one is Icecream.";
-		return getAskResponse("Menu one", speechText);
+		ReadAndParsePDF readAndParsePDF = new ReadAndParsePDF();
+		String speechText = readAndParsePDF.getMenu(Menus.BISTRO, Days.FREITAG);
+		return getAskResponse("Bistro", "Bistro hat folgende essen heute: " + speechText);
 	}
 
 	private SpeechletResponse getHelpResponse() {
