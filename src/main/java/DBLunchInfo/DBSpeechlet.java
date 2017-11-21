@@ -15,72 +15,64 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
 
+import Helper.DateConverter;
 import Models.Days;
 import Models.Menus;
 
 public class DBSpeechlet implements SpeechletV2 {
-	private static final Logger logger = LoggerFactory
-			.getLogger(DBSpeechlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(DBSpeechlet.class);
 
-	public void onSessionStarted(
-			SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
-		logger.info("onSessionStarted requestId={}, sessionId={}",
-				requestEnvelope.getRequest().getRequestId(), requestEnvelope
-						.getSession().getSessionId());
+	
+    private static final String MENUS_ITEMS = "MenuItems";
+
+	
+	public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
+		logger.info("onSessionStarted requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
+				requestEnvelope.getSession().getSessionId());
 	}
 
-	public SpeechletResponse onLaunch(
-			SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
-		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope
-				.getRequest().getRequestId(), requestEnvelope.getSession()
-				.getSessionId());
-		return getMenusResponse();
+	public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
+		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
+				requestEnvelope.getSession().getSessionId());
+		
+		return toSpeechletResponse("Welcome","Welcome to Mittag essen.");
 	}
 
-	public void onSessionEnded(
-			SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
-		logger.info("onSessionEnded requestId={}, sessionId={}",
-				requestEnvelope.getRequest().getRequestId(), requestEnvelope
-						.getSession().getSessionId());
+	public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
+		logger.info("onSessionEnded requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
+				requestEnvelope.getSession().getSessionId());
 
 	}
 
-	public SpeechletResponse onIntent(
-			SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
+	public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
 		IntentRequest request = requestEnvelope.getRequest();
-		logger.info("onIntent requestId={}, sessionId={}", request
-				.getRequestId(), requestEnvelope.getSession().getSessionId());
+		logger.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
+				requestEnvelope.getSession().getSessionId());
 
 		Intent intent = request.getIntent();
 		String intentName = (intent != null) ? intent.getName() : null;
-
+		logger.info("Running Inten: " + intentName);
 		if ("LunchIntent".equals(intentName)) {
-			return getMenusResponse();
+			return getMenusResponse(intent);
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return getHelpResponse();
 		} else if ("AMAZON.StopIntent".equals(intentName)) {
 			return stopIntent();
 		} else {
-			return getAskResponse("Unsupported",
-					"This is unsupported.  Please try something else.");
+			return getAskResponse("Unsupported", "This is unsupported.  Please try something else.");
 		}
 	}
 
 	private SpeechletResponse stopIntent() {
+		logger.info("Running stopIntent Funtion.");
 		String speechText = "Good Appetite.";
+		logger.info("Running stopIntent Funtion.");
 		return getAskResponse("Stop", speechText);
 	}
 
-	private SpeechletResponse getMenusResponse() {
-		logger.info("There was a Error.");
-		String speechText = null;
-		try{
-		speechText =ReadAndParsePDF.getInstance().getMenu(Menus.BISTRO, Days.FREITAG);
-		}catch(Exception e){
-			logger.error(e.toString());
-			speechText = "Sorry, No food for you.";
-		}
-		return getAskResponse("Bistro", "Bistro hat folgende essen heute: " + speechText);
+	private SpeechletResponse getMenusResponse(Intent intent) {
+		String speechText = DBResponse.getMenuItems(intent, MENUS_ITEMS);
+		return getAskResponse("Mittag essen", "Heutige mittag essen ist: " + speechText);
 	}
 
 	private SpeechletResponse getHelpResponse() {
@@ -92,7 +84,6 @@ public class DBSpeechlet implements SpeechletV2 {
 		SimpleCard card = getSimpleCard(cardTitle, speechText);
 		PlainTextOutputSpeech speech = getPlainTextOutputSpeech(speechText);
 		Reprompt reprompt = getReprompt(speech);
-
 		return SpeechletResponse.newAskResponse(speech, reprompt, card);
 	}
 
@@ -114,6 +105,10 @@ public class DBSpeechlet implements SpeechletV2 {
 		card.setContent(speechText);
 
 		return card;
+	}
+	
+	private SpeechletResponse toSpeechletResponse(String title, String speechText) {
+		return getAskResponse(title, speechText);
 	}
 
 }
