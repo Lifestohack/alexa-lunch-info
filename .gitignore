@@ -28,3 +28,7 @@ target/
 
 
 /target/**
+/target/.gitignore
+/target/classes/DBLunchInfo/DBSpeechlet.class
+/target/classes/DBLunchInfo/DBSpeechletRequestStreamHandler.class
+/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
