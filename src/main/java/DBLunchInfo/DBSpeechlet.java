@@ -30,7 +30,7 @@ public class DBSpeechlet implements SpeechletV2 {
 		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
 				requestEnvelope.getSession().getSessionId());
 
-		return toSpeechletResponse("Welcome", "Welcome to Mittag essen.");
+		return toSpeechletResponse("Welcome", "Willkommen zum Mittagessen. Versuch mal Menü eins oder Menü zwei zu sagen.");
 	}
 
 	public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
