@@ -69,7 +69,7 @@ public class ReadAndParsePDF {
 			}
 		} catch (Exception e) {
 			logger.info("beautifyText" + e.toString());
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 		Matcher matcher = null;
 		matcher = ignoreWithRegex(returnText, "[A-Za-z0-9]{1},");
@@ -77,6 +77,7 @@ public class ReadAndParsePDF {
 		returnText = replaceTextEmpty(matcher, returnText);
 		matcher = ignoreWithRegex(returnText, "[A-Z]{2}");
 		returnText = replaceCapitalText(matcher, returnText);
+		returnText = replaceLineBreakWithSpace(returnText);
 		returnText = replacePriceEmpty(returnText);
 		return returnText;
 
@@ -107,4 +108,10 @@ public class ReadAndParsePDF {
 		text = text.replace(text.substring(text.indexOf("€")), "");
 		return text;
 	}
+
+	private String replaceLineBreakWithSpace(String text) {
+		text = text.replace("\r", " ");
+		return text;
+	}
+
 }
