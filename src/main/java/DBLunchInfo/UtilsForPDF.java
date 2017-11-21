@@ -17,23 +17,23 @@ import technology.tabula.Table;
 
 public class UtilsForPDF {
 
-	public static Page getAreaFromFirstPage(String path, float top, float left,
-			float bottom, float right) throws IOException {
+	public static Page getAreaFromFirstPage(String path, float top, float left, float bottom, float right)
+			throws IOException {
 		return getAreaFromPage(path, 1, top, left, bottom, right);
 	}
 
-	public static Page getAreaFromFirstPageUrl(String pathUrl, float top,
-			float left, float bottom, float right) throws IOException {
+	public static Page getAreaFromFirstPageUrl(String pathUrl, float top, float left, float bottom, float right)
+			throws IOException {
 		return getAreaFromPageUrl(pathUrl, 1, top, left, bottom, right);
 	}
 
-	public static Page getAreaFromPage(String path, int page, float top,
-			float left, float bottom, float right) throws IOException {
+	public static Page getAreaFromPage(String path, int page, float top, float left, float bottom, float right)
+			throws IOException {
 		return getPage(path, page).getArea(top, left, bottom, right);
 	}
 
-	public static Page getAreaFromPageUrl(String pathUrl, int page, float top,
-			float left, float bottom, float right) throws IOException {
+	public static Page getAreaFromPageUrl(String pathUrl, int page, float top, float left, float bottom, float right)
+			throws IOException {
 		return getPageFromUrl(pathUrl, page).getArea(top, left, bottom, right);
 	}
 
