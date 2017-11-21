@@ -1,1 +1,6 @@
-LunchIntent mittag essen heute
+AMAZON.HelpIntent helfen
+AMAZON.HelpIntent hilfe
+AMAZON.StopIntent stop
+AMAZON.StopIntent danke
+AMAZON.StopIntent danke schön
+LunchIntent {MenuItems}

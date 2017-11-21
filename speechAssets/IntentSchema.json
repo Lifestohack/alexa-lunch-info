@@ -1,10 +1,22 @@
 {
   "intents": [
     {
-      "intent": "LunchIntent"
+      "intent": "AMAZON.CancelIntent"
     },
     {
       "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "MenuItems",
+          "type": "MENUS_ITEMS"
+        }
+      ],
+      "intent": "LunchIntent"
     }
   ]
 }
