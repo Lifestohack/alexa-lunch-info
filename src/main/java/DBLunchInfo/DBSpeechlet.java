@@ -72,7 +72,7 @@ public class DBSpeechlet implements SpeechletV2 {
 
 	private SpeechletResponse getMenusResponse(Intent intent) {
 		String speechText = DBResponse.getMenuItems(intent, MENUS_ITEMS);
-		return getAskResponse("Mittag essen", "Heutige mittag essen ist: " + speechText);
+		return getAskResponse("Mittag essen",  speechText);
 	}
 
 	private SpeechletResponse getHelpResponse() {
