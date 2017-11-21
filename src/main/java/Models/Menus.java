@@ -1,8 +1,8 @@
 package Models;
 
 public enum Menus {
-	SUPPE("SUPPE"), MENU1("MENÜ 1"), MENU2("MENÜ 2"), MENU3("MENÜ 3"), AKTION(
-			"SUPPE"), BISTRO("SUPPE"), DESSERT("SUPPE");
+	SUPPE("suppe"), MENU1("menü eins"), MENU2("menü zwei"), MENU3("menü drei"), AKTION(
+			"aktion"), BISTRO("bistro"), DESSERT("dessert");
 
 	private String value;
 
