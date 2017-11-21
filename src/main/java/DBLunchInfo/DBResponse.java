@@ -22,7 +22,7 @@ public class DBResponse {
 			logger.info("Running GetMenuResponse Funtion.");
 			try {
 				speechText = ReadAndParsePDF.getInstance().getMenu(menu, DateConverter.getToday());
-				speechText = "Für " + menu.toString() + "gibt es heute: " + speechText;
+				speechText = "Für " + menu.toString() + " gibt es heute: " + speechText;
 			} catch (Exception e) {
 				logger.error(e.toString());
 				speechText = "Sorry, No food for you.";
