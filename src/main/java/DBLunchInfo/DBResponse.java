@@ -14,7 +14,9 @@ public class DBResponse {
 	private static final Logger logger = LoggerFactory.getLogger(DBResponse.class);
 
 	public static String getMenuItems(Intent intent, String MENUS_ITEMS) {
+		logger.info("Slot that was used: " + MENUS_ITEMS);
 		Menus menu = getMenuType(intent, MENUS_ITEMS);
+		
 		String speechText = null;
 		if (menu == null) {
 			speechText = "Sorry, Ich habe nicht verstanden.";
@@ -22,7 +24,7 @@ public class DBResponse {
 			logger.info("Running GetMenuResponse Funtion.");
 			try {
 				speechText = ReadAndParsePDF.getInstance().getMenu(menu, DateConverter.getToday());
-				speechText = "Für " + menu.toString() + " gibt es heute: " + speechText;
+				speechText = "Für " + menu.getValue() + " gibt es heute: " + speechText;
 			} catch (Exception e) {
 				logger.error(e.toString());
 				speechText = "Sorry, No food for you.";
@@ -42,6 +44,7 @@ public class DBResponse {
 			menu = getMenuNameFromSlot(itemName);
 
 		}
+		logger.info("Menu that was requested was "+ menu.getValue());
 		return menu;
 	}
 

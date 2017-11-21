@@ -69,7 +69,7 @@ public class ReadAndParsePDF {
 			}
 		} catch (Exception e) {
 			logger.info("beautifyText" + e.toString());
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		Matcher matcher = null;
 		matcher = ignoreWithRegex(returnText, "[A-Za-z0-9]{1},");

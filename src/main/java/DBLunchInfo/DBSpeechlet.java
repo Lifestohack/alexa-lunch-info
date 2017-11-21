@@ -71,12 +71,16 @@ public class DBSpeechlet implements SpeechletV2 {
 	}
 
 	private SpeechletResponse getMenusResponse(Intent intent) {
+		logger.info("Starting getMenusResponse for new request for food.");
 		String speechText = DBResponse.getMenuItems(intent, MENUS_ITEMS);
+		logger.info("getMenusResponse: " + speechText);
+		logger.info("Ending getMenusResponse for new request for food. " + speechText);
 		return getAskResponse("Mittag essen", speechText);
 	}
 
 	private SpeechletResponse getHelpResponse() {
 		String speechText = "Versuch mal Menü eins oder Menü zwei zu sagen.";
+		logger.info("getHelpResponse: " + speechText);
 		return getAskResponse("Mittag essen", speechText);
 	}
 
