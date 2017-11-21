@@ -4,8 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import Models.Days;
 import Models.Menus;
@@ -14,12 +15,28 @@ public class test {
 
 	static String pdfWebsite = "https://www.ullrich-pittroff-catering.de/downloads/karten_komplett.pdf";
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(test.class);
+	
 	public static void main(String[] args) throws IOException {
-		ReadAndParsePDF readAndParsePDF = new ReadAndParsePDF();
-		String menu = readAndParsePDF.getMenu(Menus.BISTRO, Days.FREITAG);
+		logger.info("There was a Error.");
+		String menu = null;
+		try{
+			menu =ReadAndParsePDF.getInstance().getMenu(Menus.BISTRO, Days.FREITAG);
+		}catch(Exception e){
+			logger.error(e.toString());
+			menu = "Sorry, No food for you.";
+		}
+		
+		
+		
 		System.out.println("***********");
 		System.out.println(menu);
 		System.out.println("***********");
+		
+		
+		
+	
 		
 	}
 

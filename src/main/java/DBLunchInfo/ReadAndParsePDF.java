@@ -17,6 +17,16 @@ public class ReadAndParsePDF {
 
 	private Table table = null;
 
+	
+	private static ReadAndParsePDF instance = null;
+	
+	public static ReadAndParsePDF getInstance(){
+		if(instance == null){
+			instance = new ReadAndParsePDF();
+		}
+		return instance;
+	}
+	
 	public ReadAndParsePDF() {
 		initialize();
 	}

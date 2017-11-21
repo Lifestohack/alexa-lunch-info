@@ -19,29 +19,37 @@ import Models.Days;
 import Models.Menus;
 
 public class DBSpeechlet implements SpeechletV2 {
-	private static final Logger logger = LoggerFactory.getLogger(DBSpeechlet.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(DBSpeechlet.class);
 
-	public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
-		logger.info("onSessionStarted requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
-				requestEnvelope.getSession().getSessionId());
+	public void onSessionStarted(
+			SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
+		logger.info("onSessionStarted requestId={}, sessionId={}",
+				requestEnvelope.getRequest().getRequestId(), requestEnvelope
+						.getSession().getSessionId());
 	}
 
-	public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
-		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
-				requestEnvelope.getSession().getSessionId());
+	public SpeechletResponse onLaunch(
+			SpeechletRequestEnvelope<LaunchRequest> requestEnvelope) {
+		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope
+				.getRequest().getRequestId(), requestEnvelope.getSession()
+				.getSessionId());
 		return getMenusResponse();
 	}
 
-	public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
-		logger.info("onSessionEnded requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
-				requestEnvelope.getSession().getSessionId());
+	public void onSessionEnded(
+			SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
+		logger.info("onSessionEnded requestId={}, sessionId={}",
+				requestEnvelope.getRequest().getRequestId(), requestEnvelope
+						.getSession().getSessionId());
 
 	}
 
-	public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
+	public SpeechletResponse onIntent(
+			SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
 		IntentRequest request = requestEnvelope.getRequest();
-		logger.info("onIntent requestId={}, sessionId={}", request.getRequestId(),
-				requestEnvelope.getSession().getSessionId());
+		logger.info("onIntent requestId={}, sessionId={}", request
+				.getRequestId(), requestEnvelope.getSession().getSessionId());
 
 		Intent intent = request.getIntent();
 		String intentName = (intent != null) ? intent.getName() : null;
@@ -50,23 +58,28 @@ public class DBSpeechlet implements SpeechletV2 {
 			return getMenusResponse();
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return getHelpResponse();
-		} else if("AMAZON.StopIntent".equals(intentName)){
+		} else if ("AMAZON.StopIntent".equals(intentName)) {
 			return stopIntent();
-		}
-		else {
-			return getAskResponse("Unsupported", "This is unsupported.  Please try something else.");
+		} else {
+			return getAskResponse("Unsupported",
+					"This is unsupported.  Please try something else.");
 		}
 	}
-	
-	
+
 	private SpeechletResponse stopIntent() {
 		String speechText = "Good Appetite.";
 		return getAskResponse("Stop", speechText);
 	}
-	
+
 	private SpeechletResponse getMenusResponse() {
-		ReadAndParsePDF readAndParsePDF = new ReadAndParsePDF();
-		String speechText = readAndParsePDF.getMenu(Menus.BISTRO, Days.FREITAG);
+		logger.info("There was a Error.");
+		String speechText = null;
+		try{
+		speechText =ReadAndParsePDF.getInstance().getMenu(Menus.BISTRO, Days.FREITAG);
+		}catch(Exception e){
+			logger.error(e.toString());
+			speechText = "Sorry, No food for you.";
+		}
 		return getAskResponse("Bistro", "Bistro hat folgende essen heute: " + speechText);
 	}
 
@@ -102,7 +115,5 @@ public class DBSpeechlet implements SpeechletV2 {
 
 		return card;
 	}
-
-	
 
 }
