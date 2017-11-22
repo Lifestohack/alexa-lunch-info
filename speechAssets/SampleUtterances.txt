@@ -3,4 +3,17 @@ AMAZON.HelpIntent hilfe
 AMAZON.StopIntent stop
 AMAZON.StopIntent danke
 AMAZON.StopIntent danke schön
+LunchIntent ich möchte gerne {MenuItems} essen
+LunchIntent was gibt es heute zum {MenuItems}
+LunchIntent was gibt es heute zum {MenuItems} und wie viel {PriceItems} das
+LunchIntent was gibt es heute zum {MenuItems} und wie viel {PriceItems} es
+LunchIntent Was ist {MenuItems} für heute
+LunchIntent Was ist {MenuItems} heute
 LunchIntent {MenuItems}
+LunchIntent {MenuItems} {PriceItems}
+LunchIntent {PriceItems} {MenuItems}
+PriceIntent ich möchte gerne {PriceItems} von {MenuItems} wissen
+PriceIntent wie viel {PriceItems} {MenuItems}
+PriceIntent {PriceItems} von {MenuItems}
+PriceIntent was ist die {PriceItems} von {MenuItems}
+PriceIntent wie {PriceItems} ist {MenuItems}

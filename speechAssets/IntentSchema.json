@@ -14,9 +14,26 @@
         {
           "name": "MenuItems",
           "type": "MENUS_ITEMS"
+        },
+        {
+          "name": "PriceItems",
+          "type": "PRICE_ITEMS"
         }
       ],
       "intent": "LunchIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "MenuItems",
+          "type": "MENUS_ITEMS"
+        },
+        {
+          "name": "PriceItems",
+          "type": "PRICE_ITEMS"
+        }
+      ],
+      "intent": "PriceIntent"
     }
   ]
 }
