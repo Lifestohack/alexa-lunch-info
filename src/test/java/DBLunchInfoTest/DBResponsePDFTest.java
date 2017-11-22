@@ -8,6 +8,7 @@ import DBLunchInfo.ReadAndParsePDF;
 import Helper.DateConverter;
 import Models.Days;
 import Models.Menus;
+import Models.ResponseType;
 
 public class DBResponsePDFTest {
 
@@ -17,7 +18,7 @@ public class DBResponsePDFTest {
 	public void dBResponsePDFTest() {
 		String menu = null;
 		try {
-			menu = ReadAndParsePDF.getInstance().getMenu(Menus.BISTRO, DateConverter.getToday());
+			menu = ReadAndParsePDF.getInstance().getMenuResponse(Menus.BISTRO, DateConverter.getToday(), false);
 		} catch (Exception e) {
 			logger.error(e.toString());
 			menu = "Sorry, No food for you.";

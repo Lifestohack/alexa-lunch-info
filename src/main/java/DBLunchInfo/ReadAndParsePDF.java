@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import Models.Days;
 import Models.Menus;
+import Models.ResponseType;
 import technology.tabula.Page;
 import technology.tabula.Table;
 import technology.tabula.extractors.SpreadsheetExtractionAlgorithm;
@@ -49,15 +50,34 @@ public class ReadAndParsePDF {
 		logger.info("Pdf initialization ended.");
 	}
 
-	public String getMenu(Menus menus, Days days) {
+	public String getMenuResponse(Menus menus, Days days, boolean price) {
 		if (table == null) {
 			initialize();
 		}
 		logger.info("Starting to getMenu from Table.");
 		int row = Menus.valueOf(menus.toString()).ordinal();
 		int col = Days.valueOf(days.toString()).ordinal() + 1;
+		String speechText = UtilsForPDF.tableToArrayOfRows(table)[row][col];
+		logger.info("******************");
+		logger.info(speechText);
+		logger.info("******************");
+		if (price == false) {
+			speechText = getMenu(speechText);
+			speechText = "Für " + menus.getValue() + " gibt es heute: " + speechText;
+		} else if (price = true) {
+			speechText = getPrice(speechText);
+			speechText = menus.getValue() + " kostet " + speechText;
+		}
 		logger.info("Ended to getMenu from Table.");
-		return beautifyText(UtilsForPDF.tableToArrayOfRows(table)[row][col]);
+		return speechText;
+	}
+
+	private String getMenu(String text) {
+		return beautifyText(text);
+	}
+
+	private String getPrice(String text) {
+		return text.substring(text.indexOf("€"));
 	}
 
 	private String beautifyText(String text) {
@@ -69,11 +89,12 @@ public class ReadAndParsePDF {
 			}
 		} catch (Exception e) {
 			logger.info("beautifyText" + e.toString());
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		Matcher matcher = null;
-		matcher = ignoreWithRegex(returnText, "[A-Za-z0-9]{1},");
-
+		matcher = ignoreWithRegex(returnText, "[A-Z0-9]{1},");
+		returnText = replaceTextEmpty(matcher, returnText);
+		matcher = ignoreWithRegex(returnText, "\\b[A-Z]\\b");
 		returnText = replaceTextEmpty(matcher, returnText);
 		matcher = ignoreWithRegex(returnText, "[A-Z]{2}");
 		returnText = replaceCapitalText(matcher, returnText);
@@ -105,8 +126,12 @@ public class ReadAndParsePDF {
 	}
 
 	private String replacePriceEmpty(String text) {
-		text = text.replace(text.substring(text.indexOf("€")), "");
-		return text;
+		String speechText = null;
+		speechText = text.replace(text.substring(text.indexOf("€")), "");
+		if (speechText == null) {
+			speechText = text;
+		}
+		return speechText;
 	}
 
 	private String replaceLineBreakWithSpace(String text) {

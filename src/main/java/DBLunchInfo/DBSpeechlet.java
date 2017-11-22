@@ -20,6 +20,7 @@ public class DBSpeechlet implements SpeechletV2 {
 	private static final Logger logger = LoggerFactory.getLogger(DBSpeechlet.class);
 
 	private static final String MENUS_ITEMS = "MenuItems";
+	private static final String PRICE_ITEMS = "PriceItems";
 
 	public void onSessionStarted(SpeechletRequestEnvelope<SessionStartedRequest> requestEnvelope) {
 		logger.info("onSessionStarted requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
@@ -30,17 +31,16 @@ public class DBSpeechlet implements SpeechletV2 {
 		logger.info("onLaunch requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
 				requestEnvelope.getSession().getSessionId());
 
-		return toSpeechletResponse("Welcome", "Willkommen zum Mittagessen. Versuch mal Menü eins oder Menü zwei zu sagen.");
+		return toSpeechletResponse("Welcome", "Willkommen!!! Was möchtest du essen?");
 	}
 
+	@SuppressWarnings("unused")
 	public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> requestEnvelope) {
-
 		SessionEndedRequest sessionEndedRequest = requestEnvelope.getRequest();
 		Session session = requestEnvelope.getSession();
 
 		logger.info("onSessionEnded requestId={}, sessionId={}", requestEnvelope.getRequest().getRequestId(),
 				requestEnvelope.getSession().getSessionId());
-
 	}
 
 	public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> requestEnvelope) {
@@ -52,13 +52,16 @@ public class DBSpeechlet implements SpeechletV2 {
 		String intentName = (intent != null) ? intent.getName() : null;
 		logger.info("Running Inten: " + intentName);
 		if ("LunchIntent".equals(intentName)) {
-			return getMenusResponse(intent);
+			return getLunchIntentResponse(intent);
 		} else if ("AMAZON.HelpIntent".equals(intentName)) {
 			return getHelpResponse();
 		} else if ("AMAZON.StopIntent".equals(intentName)) {
-			return getStopResponse("Stop","Guten Appetit!");
+			return getStopResponse("Stop", "Guten Appetit!");
+		} else if ("PriceIntent".equals(intentName)) {
+			return getPriceIntentResponse(intent);
 		} else {
-			return getAskResponse("Unsupported", "This is unsupported.  Please try something else.");
+
+			return getAskResponse("Unsupported", "Entschuldigung! Ich habe nicht verstanden. Welche menü meintest du?");
 		}
 	}
 
@@ -70,16 +73,25 @@ public class DBSpeechlet implements SpeechletV2 {
 		return SpeechletResponse.newTellResponse(speech, card);
 	}
 
-	private SpeechletResponse getMenusResponse(Intent intent) {
+	private SpeechletResponse getLunchIntentResponse(Intent intent) {
 		logger.info("Starting getMenusResponse for new request for food.");
-		String speechText = DBResponse.getMenuItems(intent, MENUS_ITEMS);
+		String speechText = DBResponse.getMenuResponseFromIntent(intent, MENUS_ITEMS, PRICE_ITEMS, false );
 		logger.info("getMenusResponse: " + speechText);
 		logger.info("Ending getMenusResponse for new request for food. " + speechText);
 		return getAskResponse("Mittag essen", speechText);
 	}
 
+	private SpeechletResponse getPriceIntentResponse(Intent intent) {
+		logger.info("Starting LunchIntent for new request for food.");
+		String speechText = DBResponse.getMenuResponseFromIntent(intent, MENUS_ITEMS, PRICE_ITEMS, true );
+		logger.info("getMenusResponse: " + speechText);
+		logger.info("Ending LunchIntent for new request for food. " + speechText);
+		return getAskResponse("Mittag essen", speechText);
+	}
+	
+	
 	private SpeechletResponse getHelpResponse() {
-		String speechText = "Versuch mal Menü eins oder Menü zwei zu sagen.";
+		String speechText = "Du hast folgende Menü zur auswahl: suppe, menü eins, menü zwei, menü drei, aktion, bistro und dessert. Du kannst auch nach dem Preis fragen.";
 		logger.info("getHelpResponse: " + speechText);
 		return getAskResponse("Mittag essen", speechText);
 	}
