@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import DBLunchInfo.ReadAndParsePDF;
 import Helper.DateConverter;
-import Models.Days;
 import Models.Menus;
-import Models.ResponseType;
 
 public class DBResponsePDFTest {
 

@@ -21,7 +21,6 @@ public class DBResponse {
 		Menus menu = getMenuType(intent, MENUS_ITEMS);
 
 		String speechText = null;
-		String priceText = null;
 		if (menu == null) {
 			speechText = "Entschuldigung! Ich habe menü nicht verstanden. Bitte versuch mal wieder.";
 		} else {

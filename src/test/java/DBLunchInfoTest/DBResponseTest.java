@@ -7,12 +7,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazon.speech.slu.ConfirmationStatus;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.slu.Slot;
 
 import DBLunchInfo.DBResponse;
-import Models.ResponseType;
 
 public class DBResponseTest {
 
